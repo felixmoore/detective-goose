@@ -1,29 +1,107 @@
-PImage background;
+PImage background, backWall, sideWall, bed, woodTexture;
 int gameMode = 0; //0=menu, 1=main game, 2=mini game, 3=win, 4=lose
 Sprite detective;
 Enemy enemy;
 int x = 0;
+boolean shut;
 
+Background back; 
+Room[] room;
+RoomL[] roomL;
 
+//items for enemies
+Item sword, axe, bow, staff, 
+  ring, helmet, hat, shoes, 
+  goldKey, silverKey, blueScroll, redScroll, 
+  apple, cheese, egg, pie, 
+  candle, chalice, potion, necklace, 
+  bookshelf, barrel, tableShort, tableLong, chest, 
+  bomb;
 
 void setup() {
-  size(1100, 825);
+  size(1000, 600);
   //background = loadImage("temp_background.png");
   frameRate(30); //controls animation speed
-  gameMode = 0;
+
+  //background
+  back=new Background(width, height);//set background
+  size(1000, 600);
+
+  shut=true;//shut doors
+
+  //load image
+  bed=loadImage("Blue_Bed_Side.png");
+  woodTexture=loadImage("woodTexture.jpg");
+  backWall= loadImage("wall_side_right.png");
+  sideWall=loadImage("wall_side.png"); 
+
+  //create rooms
+  room= new Room[2];
+  roomL= new RoomL[2];
+
+  for (int i=0; i<room.length; i++) {
+    room[i]=new Room(width, height, 200*(i+1), (width/2.001), 200*(i+1)) ;
+  }
+
+
+  //weapon
+  sword = new Item(loadImage("item_sword.png"), "sword", 1, 1, false);
+  axe = new Item(loadImage("item_axe.png"), "axe", 1, 1, false);
+  bow = new Item(loadImage("item_bow.png"), "bow", 1, 1, false);
+  staff = new Item(loadImage("item_staff.png"), "staff", 1, 1, false);
+  //clothing identifier
+  ring = new Item(loadImage("item_ring.png"), "ring", 1, 1, false);
+  helmet = new Item(loadImage("item_helmet.png"), "helmet", 1, 1, false);
+  hat = new Item(loadImage("item_hat.png"), "hat", 1, 1, false);
+  shoes = new Item(loadImage("item_shoes.png"), "shoes", 1, 1, false);
+  //unlocking item
+  goldKey = new Item(loadImage("item_goldKey.png"), "gold key", 1, 1, false);
+  silverKey = new Item(loadImage("item_silverKey.png"), "silver key", 1, 1, false);
+  redScroll = new Item(loadImage("item_redScroll.png"), "red scroll", 1, 1, false);
+  blueScroll = new Item(loadImage("item_blueScroll.png"), "blue scroll", 1, 1, false);
+  //food
+  apple = new Item(loadImage("item_apple.png"), "apple", 1, 1, false);
+  cheese = new Item(loadImage("item_cheese.png"), "cheese", 1, 1, false);
+  egg = new Item(loadImage("item_egg.png"), "egg", 1, 1, false);
+  pie = new Item(loadImage("item_pie.png"), "pie", 1, 1, false);
+  //location identifier
+  candle = new Item(loadImage("item_candle.png"), "candle", 1, 1, false);
+  chalice = new Item(loadImage("item_chalice.png"), "chalice", 1, 1, false);
+  potion = new Item(loadImage("item_potion.png"), "potion", 1, 1, false);
+  necklace = new Item(loadImage("item_necklace.png"), "necklace", 1, 1, false);
+  //furniture
+  bookshelf = new Item(loadImage("item_bookshelf.png"), "bookshelf", 1, 1, false);
+  barrel = new Item(loadImage("item_barrel.png"), "barrel", 1, 1, false);
+  tableShort = new Item(loadImage("item_tableShort.png"), "table", 1, 1, false);
+  tableLong = new Item(loadImage("item_tableLong.png"), "table", 1, 1, false);
+  chest = new Item(loadImage("item_chestClosed.png"), "chest", 1, 1, false);
+  // items for mini game
+  bomb = new Item(loadImage("item_bomb.png"), "bomb", 1, 1, false);
+
+
+  gameMode = 1;
   detective = new Sprite();
- 
 }
 
 
 void draw() {
   if (gameMode==0) {
     //menu
-        minigame();
-       
+    minigame();
   } else if (gameMode==1) {
     //image(background,0,0);
-    background(255);
+    back.display(); //show rooms
+    for (int i=0; i<room.length; i++) {
+      room[i]=new Room(width, height, 200*(i+1), (width/2.001), 40+200*(i+1)) ;
+    }
+    room[0].display();//display rooms
+    room[1].display();//display rooms
+
+    for (int i=0; i<roomL.length; i++) {
+      roomL[i]=new RoomL(width, height, 200*(i+1), width-(width/2.001), 40+200*(i+1)) ;
+    }
+    roomL[0].display();//display rooms
+    roomL[1].display();
     detective.display();
     //detective.textbox();
   } else if (gameMode==2) {
@@ -52,27 +130,27 @@ void minigame() {
   enemy = new Enemy();
   detective.y = height/2;
   detective.x = 20;
-  detective.walkRight.display(detective.x,detective.y);
+  detective.walkRight.display(detective.x, detective.y);
 }
 
 void keyPressed() {
 
-  
-   if (gameMode == 2) {
-      if (key == CODED) { //moves goose on key press
-        if (keyCode == UP) { 
-          if (detective.y>5) { //prevents goose going off screen  
 
-            detective.y-=5;
-          }
-        } else if (keyCode == DOWN) {
-          if (detective.y<height-20) {
+  if (gameMode == 2) {
+    if (key == CODED) { //moves goose on key press
+      if (keyCode == UP) { 
+        if (detective.y>5) { //prevents goose going off screen  
 
-            detective.y += 5;
-          }
+          detective.y-=5;
+        }
+      } else if (keyCode == DOWN) {
+        if (detective.y<height-20) {
+
+          detective.y += 5;
         }
       }
     }
+  }
 
 
   if (gameMode == 1) {
@@ -98,9 +176,5 @@ void keyPressed() {
         detective.x += 5;
       }
     }
-
-
-
-   
   }
 }
