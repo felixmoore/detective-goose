@@ -14,13 +14,13 @@ class Enemy extends Sprite {
   public void attack() {
     //fire some kind of projectile @ goose
 
-    for (int i=0; i<2; i++) {
-      items.get(i).posX = x;
-      items.get(i).posY = y;
-      int speed = int(random(5, 10));
-      items.get(i).display();
-      items.get(i).posX-=speed;
-    }
+    //for (int i=0; i<2; i++) {
+    //  items.get(i).posX = x;
+    //  items.get(i).posY = y;
+    //  int speed = int(random(5, 10));
+    //  items.get(i).display();
+    //  items.get(i).posX-=speed;
+    //}
   }
   public void display() {
     //attack();
@@ -38,12 +38,12 @@ class Enemy extends Sprite {
     }
 
 
-    for (int i=0; i<2; i++) {
-      items.get(i).posX = x;
-      items.get(i).posY = y;
-      int speed = int(random(5, 10));
-      items.get(i).display();
-      items.get(i).posX-=speed;
-    }
+    //for (int i=0; i<2; i++) {
+    //  items.get(i).posX = x;
+    //  items.get(i).posY = y;
+    //  int speed = int(random(5, 10));
+    //  items.get(i).display();
+    //  items.get(i).posX-=speed;
+    //}
   }
 }

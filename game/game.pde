@@ -1,24 +1,28 @@
-PImage background, backWall, sideWall, bed, woodTexture; //<>// //<>// //<>// //<>//
+PImage background, backWall, sideWall, bed, woodTexture; //<>// //<>// //<>// //<>// //<>//
 int gameMode = 0; //0=menu, 1=main game, 2=mini game, 3=win, 4=lose
 Sprite detective;
 Enemy enemy;
 int x = 0;
 boolean shut, result;
 
-ArrayList<Item> items = new ArrayList<Item>();
 
 Background back; 
 Room[] room;
 RoomL[] roomL;
-//Item[] items;
 //items for enemies
-//Item sword, axe, bow, staff, 
-//  ring, helmet, hat, shoes, 
-//  goldKey, silverKey, blueScroll, redScroll, 
-//  apple, cheese, egg, pie, 
-//  candle, chalice, potion, necklace, 
-//  bookshelf, barrel, tableShort, tableLong, chest, 
-//  bomb;
+Item sword, axe, bow, staff, 
+  ring, helmet, hat, shoes, 
+  goldKey, silverKey, blueScroll, redScroll, 
+  apple, cheese, egg, pie, 
+  candle, chalice, potion, necklace, 
+  bookshelf, barrel, tableShort, tableLong, chest, 
+  bomb, 
+  empty;
+
+//ARRAY LIST INVENTORY
+ArrayList<Item> inventory = new ArrayList<Item>();
+//ARRAY LIST ALL ITEMS
+ArrayList<Item> items = new ArrayList<Item>();
 
 void setup() {
   background = loadImage("grass.png");
@@ -49,43 +53,73 @@ void setup() {
   }
 
 
-
   //weapon
-  items.add(new Item(loadImage("item_sword.png"), "sword", 50, 100, false));
-  //sword = new Item(loadImage("item_sword.png"), "sword", 1, 1, false);
-  items.add(new Item(loadImage("item_axe.png"), "axe", 1, 1, false));
-  //axe = new Item(loadImage("item_axe.png"), "axe", 1, 1, false);
-  //bow = new Item(loadImage("item_bow.png"), "bow", 1, 1, false);
-  //staff = new Item(loadImage("item_staff.png"), "staff", 1, 1, false);
-  ////clothing identifier
-  //ring = new Item(loadImage("item_ring.png"), "ring", 1, 1, false);
-  //helmet = new Item(loadImage("item_helmet.png"), "helmet", 1, 1, false);
-  //hat = new Item(loadImage("item_hat.png"), "hat", 1, 1, false);
-  //shoes = new Item(loadImage("item_shoes.png"), "shoes", 1, 1, false);
-  ////unlocking item
-  //goldKey = new Item(loadImage("item_goldKey.png"), "gold key", 1, 1, false);
-  //silverKey = new Item(loadImage("item_silverKey.png"), "silver key", 1, 1, false);
-  //redScroll = new Item(loadImage("item_redScroll.png"), "red scroll", 1, 1, false);
-  //blueScroll = new Item(loadImage("item_blueScroll.png"), "blue scroll", 1, 1, false);
-  ////food
-  //apple = new Item(loadImage("item_apple.png"), "apple", 1, 1, false);
-  //cheese = new Item(loadImage("item_cheese.png"), "cheese", 1, 1, false);
-  //egg = new Item(loadImage("item_egg.png"), "egg", 1, 1, false);
-  //pie = new Item(loadImage("item_pie.png"), "pie", 1, 1, false);
-  ////location identifier
-  //candle = new Item(loadImage("item_candle.png"), "candle", 1, 1, false);
-  //chalice = new Item(loadImage("item_chalice.png"), "chalice", 1, 1, false);
-  //potion = new Item(loadImage("item_potion.png"), "potion", 1, 1, false);
-  //necklace = new Item(loadImage("item_necklace.png"), "necklace", 1, 1, false);
-  ////furniture
-  //bookshelf = new Item(loadImage("item_bookshelf.png"), "bookshelf", 1, 1, false);
-  //barrel = new Item(loadImage("item_barrel.png"), "barrel", 1, 1, false);
-  //tableShort = new Item(loadImage("item_tableShort.png"), "table", 1, 1, false);
-  //tableLong = new Item(loadImage("item_tableLong.png"), "table", 1, 1, false);
-  //chest = new Item(loadImage("item_chestClosed.png"), "chest", 1, 1, false);
-  //// items for mini game
-  //bomb = new Item(loadImage("item_bomb.png"), "bomb", 1, 1, false);
+  sword = new Item(loadImage("item_sword.png"), "sword", width/2-100, height/2, false);
+  axe = new Item(loadImage("item_axe.png"), "axe", 1, 1, false);
+  bow = new Item(loadImage("item_bow.png"), "bow", 1, 1, false);
+  staff = new Item(loadImage("item_staff.png"), "staff", 1, 1, false);
+  //clothing identifier
+  ring = new Item(loadImage("item_ring.png"), "ring", 1, 1, false);
+  helmet = new Item(loadImage("item_helmet.png"), "helmet", 1, 1, false);
+  hat = new Item(loadImage("item_hat.png"), "hat", 1, 1, false);
+  shoes = new Item(loadImage("item_shoes.png"), "shoes", 1, 1, false);
+  //unlocking item
+  goldKey = new Item(loadImage("item_goldKey.png"), "gold key", 1, 1, false);
+  silverKey = new Item(loadImage("item_silverKey.png"), "silver key", 1, 1, false);
+  redScroll = new Item(loadImage("item_redScroll.png"), "red scroll", 1, 1, false);
+  blueScroll = new Item(loadImage("item_blueScroll.png"), "blue scroll", 1, 1, false);
+  //food
+  apple = new Item(loadImage("item_apple.png"), "apple", 1, 1, false);
+  cheese = new Item(loadImage("item_cheese.png"), "cheese", 1, 1, false);
+  egg = new Item(loadImage("item_egg.png"), "egg", 1, 1, false);
+  pie = new Item(loadImage("item_pie.png"), "pie", 1, 1, false);
+  //location identifier
+  candle = new Item(loadImage("item_candle.png"), "candle", 1, 1, false);
+  chalice = new Item(loadImage("item_chalice.png"), "chalice", 1, 1, false);
+  potion = new Item(loadImage("item_potion.png"), "potion", 1, 1, false);
+  necklace = new Item(loadImage("item_necklace.png"), "necklace", 1, 1, false);
+  //furniture
+  bookshelf = new Item(loadImage("item_bookshelf.png"), "bookshelf", 1, 1, false);
+  barrel = new Item(loadImage("item_barrel.png"), "barrel", 1, 1, false);
+  tableShort = new Item(loadImage("item_tableShort.png"), "table", 1, 1, false);
+  tableLong = new Item(loadImage("item_tableLong.png"), "table", 1, 1, false);
+  chest = new Item(loadImage("item_chestClosed.png"), "chest", 1, 1, false);
+  // items for mini game
+  bomb = new Item(loadImage("item_bomb.png"), "bomb", 1, 1, false);
+  empty = new Item(loadImage("item_empty.png"), "empty", 1, 1, false);
+  items.add(sword);
+  items.add(axe);
+  items.add(bow);
+  items.add(staff);
+  items.add(ring);
+  items.add(helmet);
+  items.add(hat);
+  items.add(shoes);
+  items.add(goldKey);
+  items.add(silverKey);
+  items.add(blueScroll);
+  items.add(redScroll);
+  items.add(apple);
+  items.add(cheese);
+  items.add(egg);
+  items.add(pie);
+  items.add(candle);
+  items.add(chalice);
+  items.add(potion);
+  items.add(necklace);
+  items.add(bookshelf);
+  items.add(barrel);
+  items.add(tableShort);
+  items.add(tableLong);
+  items.add(chest);
+  items.add(bomb);
+  items.add(empty);
+  println(items);
 
+  int inventorySize = 5;
+  for (int i =0; i<inventorySize; i++) {
+    inventory.add(new Item(loadImage("item_empty.png"), "empty", 50 *(i+1), 15, false));
+  }  
 
   gameMode = 0;
   detective = new Sprite();
@@ -152,8 +186,9 @@ void draw() {
 
 
     detective.display();
+
+    displayInventory();
   } else if (gameMode==2) {
-    //minigame();
 
     image(background, x, 0); //draw background twice adjacent
     image(background, x+background.width, 0); 
@@ -161,6 +196,13 @@ void draw() {
     if (x == -background.width) {
       x=0; //wrap background
     }
+    for (int i=0; i<2; i++) {
+      items.get(i).display();
+      items.get(i).posX -= 5;
+    }
+    items.get(12).display();
+    items.get(12).posX -= 3;
+
     detective.display();
     enemy.move();
     enemy.display();
@@ -172,6 +214,67 @@ void draw() {
   }
   wallChecks();
 }
+
+
+
+
+
+
+boolean isItemInRange() {
+  //
+  //
+  return true;
+}
+
+boolean isInventoryFull() {
+  boolean isFull = true;
+  int index = -1; //-1 means no more index avaiable
+  for (int i =0; i<inventory.size(); i++) {
+    Item tempItem = inventory.get(i);
+    //println(tempItem);
+    String itemDescription = tempItem.getDescription();
+    if (itemDescription == "empty") {
+      isFull = false;
+      index = i;
+      noLoop();
+    }
+  }
+  return isFull;
+}
+//NEW
+
+int getIndex() {
+  boolean isFull = true;
+  int index = -1;
+  for (int i =0; i<inventory.size(); i++) {
+    Item tempItem = inventory.get(i);
+    //println(tempItem);
+    String itemDescription = tempItem.getDescription();
+    if (itemDescription == "empty") {
+      isFull = false;
+      index = i;
+      noLoop();
+    }
+  }
+  return index;
+}
+
+//if item has been collided with, then call getItem()
+void getItem() {
+  String itemRange = str(isItemInRange()); //returns item or null
+  //check if space in inventory: spaceInInventory = isInventoryFull()
+  boolean spaceInInventory=true;
+  int emptyIndex = getIndex();
+  //println(itemRange, spaceInInventory);
+  if (itemRange != "null" && spaceInInventory == true) {
+    //put item in inventory
+    //inventory[emptyIndex] = collidedItem;
+    //collidedItem.setStatus = true;
+  }
+}
+
+
+
 
 void wallChecks() {
   back.backWallCheck();
@@ -195,10 +298,37 @@ void minigame() {
   detective.y = height/2;
   detective.x = 20;
   detective.walkRight.display(detective.x, detective.y);
+
+  for (int i=0; i<2; i++) {
+    items.get(i).itemImage.resize(32, 0);
+    items.get(i).posX = enemy.x;
+    items.get(i).posY = enemy.y;
+  }
+  items.get(12).itemImage.resize(32, 0);
+  items.get(12).posX = enemy.x;
+  items.get(12).posY = enemy.y+int(random(-100, 100));
+
+  if (collisionDetection(detective, detective.walkRight.getWidth(), detective.walkRight.getHeight(), items.get(12), items.get(12).getWidth(), items.get(12).getHeight())) {
+    detective.x+=20;
+  }
 }
 
+void displayInventory() {
+  fill(255);
+  rect(40, 10, 250, 25);
+  for (int i =0; i<inventory.size(); i++) {
+    Item tempItem = inventory.get(i);
+    tempItem.display();
+  }
+}
+
+
+
+
+
+
 void keyPressed() {
-  if ( (key == 'x'|| key == 'X')&& detective.showTextbox) {
+  if ( (key == 'z'|| key == 'Z')&& detective.showTextbox) {
     detective.showTextbox = false;
   } 
 
@@ -258,10 +388,18 @@ void keyPressed() {
         }
 
         for (int i=0; i<roomL.length; i++) {
-          roomL[i].doorOpen(); 
-          //detective.showTextbox = true;
+          roomL[i].doorOpen();
         }
+        for (int i=0; i<items.size(); i++) {
+          items.get(i).pickup(detective.x, detective.y);
+          items.get(i).display();
+        }
+      } else if  (key == 'z'|| key == 'Z') {
+        detective.showTextbox = false;
       }
+      //else if (facing item && (key == 'z'|| key == 'Z'){
+
+      //}
     }
   }
 }

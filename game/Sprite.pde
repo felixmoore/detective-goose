@@ -58,7 +58,7 @@ class Sprite {
       rect(0, height-height/3, width, height/3);
       fill(0);
       textSize(30);
-      text("X", width-45, height-15);
+      text("Z", width-45, height-15);
       //depending on condition, display different text (read from file?)
       //if (gameState ==1)
       //if (interact with object){
