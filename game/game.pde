@@ -128,7 +128,7 @@ void setup() {
     inventory.add(new Item(loadImage("item_empty.png"), "empty", 50 *(i+1), 15, false));
   }  
 
-  gameMode = 3;
+  gameMode = 0;
   detective = new Sprite();
   setRandomItems();
 }
@@ -137,7 +137,6 @@ void setup() {
 void draw() {
   if (gameMode==0) {
     //menu
-    background(139);
     color c1 = color(88, 111, 255);
     color c2 = color(116, 255, 154);
 
@@ -230,29 +229,65 @@ void draw() {
       detective.x += 200;
     }
 
-    if (minigameCollide(color(155, 173, 183)) || minigameCollide(color(143, 86, 59))) {
+    if (minigameCollide(color(0)) || minigameCollide(color(87))) {
       detective.x -= 50;
     }
 
     detective.display();
     enemy.move();
     enemy.display();
-
-    if (detective.x >= enemy.x-20) {
+    if (detective.x<0) {
       noLoop();
-      detective.display();
-
-      enemy.display();
+      gameMode = 4;
+    }
+    if (detective.x+70 >= enemy.x) {
+      noLoop();
+      gameMode = 3;
       //print win, after a few seconds move to win screen/gamemode 3
     }
-
-
-    
   } else if (gameMode==3) {
     //win
-    minigame();
+    //minigame();
+    color c1 = color(255, 39, 39);
+    color c2 = color(255, 15, 212);
+
+    for (int i = 0; i <= width; i++) {
+      float inter = map(i, 0, width, 0, 1);
+      color c = lerpColor(c1, c2, inter);
+      stroke(c);
+      line(i, 0, i, height);
+    }
+    fill(0);
+    textSize(60);
+    textAlign(CENTER);
+    text("Congratulations! You won!", (width/2)+2, (height/2-28));
+    fill(255);
+    text("Congratulations! You won!", width/2, height/2-30);
+
+
+    fill(0);
+    textSize(40);
+    text("You saved the gosling from the evil" + enemy.enemyTypes[enemy.index]+"!", (width/2)+2, (height/2)+32);
+    fill(255);
+    text("You saved the gosling from the evil" + enemy.enemyTypes[enemy.index]+"!", width/2, height/2+30);
   } else if (gameMode==4) {
     //lose
+
+    color c1 = color(255, 39, 39);
+    color c2 = color(255, 15, 212);
+
+    for (int i = 0; i <= width; i++) {
+      float inter = map(i, 0, width, 0, 1);
+      color c = lerpColor(c1, c2, inter);
+      stroke(c);
+      line(i, 0, i, height);
+    }
+    fill(0);
+    textSize(60);
+    textAlign(CENTER);
+    text("You lost!", (width/2)+2, (height/2-28));
+    fill(255);
+    text("You lost!", width/2, height/2-30);
   }
 }
 
@@ -295,14 +330,14 @@ boolean isItemInRange() {
 
 boolean isInventoryFull() {
   boolean isFull = true;
-  int index = -1; //-1 means no more index avaiable
+  //int index = -1; //-1 means no more index avaiable
   for (int i =0; i<inventory.size(); i++) {
     Item tempItem = inventory.get(i);
     //println(tempItem);
     String itemDescription = tempItem.getDescription();
     if (itemDescription == "empty") {
       isFull = false;
-      index = i;
+      //index = i;
       noLoop();
     }
   }
@@ -311,14 +346,14 @@ boolean isInventoryFull() {
 //NEW
 
 int getIndex() {
-  boolean isFull = true;
+  //boolean isFull = true;
   int index = -1;
   for (int i =0; i<inventory.size(); i++) {
     Item tempItem = inventory.get(i);
     //println(tempItem);
     String itemDescription = tempItem.getDescription();
     if (itemDescription == "empty") {
-      isFull = false;
+      //isFull = false;
       index = i;
       noLoop();
     }

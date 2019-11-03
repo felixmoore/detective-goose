@@ -1,14 +1,14 @@
 class Enemy extends Sprite {
   private Animation walkRight;
-  int dX, dY, x, y;
+  int dX, dY, x, y, index;
   String[] enemyTypes = {"fox", "bear", "raccoon", "wolf"};
 
 
   public Enemy() {
     x=width-125;
     y=height/2;
-    int index = int(random(enemyTypes.length));
-    walkRight = new Animation("/enemies/"+enemyTypes[index], 2);
+    index = int(random(enemyTypes.length));
+    walkRight = new Animation("/enemies/"+enemyTypes[index], 2); //<>//
   }
 
   public void attack() {
@@ -37,7 +37,7 @@ class Enemy extends Sprite {
       y += 20;
     }
 
-
+   
     //for (int i=0; i<2; i++) {
     //  items.get(i).posX = x;
     //  items.get(i).posY = y;
