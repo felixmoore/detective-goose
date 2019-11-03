@@ -1,4 +1,4 @@
-PImage background, backWall, sideWall, bed, woodTexture; //<>// //<>// //<>// //<>// //<>//
+PImage background, backWall, sideWall, bed, woodTexture; //<>// //<>// //<>// //<>// //<>// //<>// //<>//
 int gameMode = 0; //0=menu, 1=main game, 2=mini game, 3=win, 4=lose
 Sprite detective;
 Enemy enemy;
@@ -23,6 +23,13 @@ Item sword, axe, bow, staff,
 ArrayList<Item> inventory = new ArrayList<Item>();
 //ARRAY LIST ALL ITEMS
 ArrayList<Item> items = new ArrayList<Item>();
+//ARRAY LIST RANDOM ITEMS
+ArrayList<Item> randomItemsList = new ArrayList<Item>();
+
+//NEEEEEW
+float[] randomItemPosX = {100,900,100,100,900};
+float[] randomItemPosY = {100,300,500,300,500};
+//NEEEEEW
 
 void setup() {
   background = loadImage("grass.png");
@@ -54,7 +61,7 @@ void setup() {
 
 
   //weapon
-  sword = new Item(loadImage("item_sword.png"), "sword", width/2-100, height/2, false);
+  sword = new Item(loadImage("item_sword.png"), "sword", 1, 1, false);
   axe = new Item(loadImage("item_axe.png"), "axe", 1, 1, false);
   bow = new Item(loadImage("item_bow.png"), "bow", 1, 1, false);
   staff = new Item(loadImage("item_staff.png"), "staff", 1, 1, false);
@@ -123,6 +130,7 @@ void setup() {
 
   gameMode = 0;
   detective = new Sprite();
+  setRandomItems();
 }
 
 
@@ -193,6 +201,7 @@ void draw() {
   detective.display();
 
   displayInventory();
+  displayRandomItems();
 } else if (gameMode==2) {
 
   image(background, x, 0); //draw background twice adjacent
@@ -221,7 +230,33 @@ wallChecks();
 }
 
 
+//NEEEEEEEEEW
+void setRandomItems(){
+  int randomIndex = int(random(0,20));
+  float xPos;
+  float yPos;
+  //int index = 0;
+  for(int i = 0; i<5; i++){
+    print(i);
+    randomIndex = int(random(0,20));
+    Item randomItem = items.get(randomIndex);
+    println(randomItemPosX);
+    xPos = randomItemPosX[i];
+    yPos = randomItemPosY[i];
+    randomItem.setX(xPos);
+    randomItem.setY(yPos);
+    randomItemsList.add(randomItem);
+    //randomItem.display();
+  }
+}
 
+void displayRandomItems(){
+  for(int i = 0; i<5; i++){
+    Item item = randomItemsList.get(i);
+    item.display();
+  }
+}
+  
 
 
 
