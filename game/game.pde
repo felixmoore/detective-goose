@@ -3,12 +3,14 @@ int gameMode = 0; //0=menu, 1=main game, 2=mini game, 3=win, 4=lose
 Sprite detective;
 Enemy enemy;
 int x = 0;
-boolean shut;
+boolean shut, result;
+
+ArrayList<Item> items = new ArrayList<Item>();
 
 Background back; 
 Room[] room;
 RoomL[] roomL;
-
+//Item[] items;
 //items for enemies
 Item sword, axe, bow, staff, 
   ring, helmet, hat, shoes, 
@@ -19,18 +21,18 @@ Item sword, axe, bow, staff,
   bomb;
 
 void setup() {
+
+
   size(1000, 600);
-  //background = loadImage("temp_background.png");
   frameRate(30); //controls animation speed
 
   //background
   back=new Background(width, height);//set background
-  size(1000, 600);
-
   shut=true;//shut doors
 
   //load image
   bed=loadImage("Blue_Bed_Side.png");
+
   woodTexture=loadImage("woodTexture.jpg");
   backWall= loadImage("wall_side_right.png");
   sideWall=loadImage("wall_side.png"); 
@@ -45,7 +47,9 @@ void setup() {
 
 
   //weapon
+  items.add(new Item(loadImage("item_sword.png"), "sword", 1, 1, false));
   sword = new Item(loadImage("item_sword.png"), "sword", 1, 1, false);
+  items.add(new Item(loadImage("item_axe.png"), "axe", 1, 1, false));
   axe = new Item(loadImage("item_axe.png"), "axe", 1, 1, false);
   bow = new Item(loadImage("item_bow.png"), "bow", 1, 1, false);
   staff = new Item(loadImage("item_staff.png"), "staff", 1, 1, false);
@@ -81,6 +85,7 @@ void setup() {
 
   gameMode = 1;
   detective = new Sprite();
+  //detective.showTextbox = true;
 }
 
 
@@ -102,8 +107,31 @@ void draw() {
     }
     roomL[0].display();//display rooms
     roomL[1].display();
+
+
+
+    if (detective.dY == -1 && detective.dX == 0) {
+      for (int i=0; i<items.size(); i++) {
+        result = collisionDetection(detective, detective.walkUp.getWidth(), detective.walkUp.getHeight(), items.get(i), items.get(i).getWidth(), items.get(i).getHeight());
+      }
+    } else if (detective.dY == 1 && detective.dX == 0) {
+      for (int i=0; i<items.size(); i++) {
+        result = collisionDetection(detective, detective.walkDown.getWidth(), detective.walkDown.getHeight(), items.get(i), items.get(i).getWidth(), items.get(i).getHeight());
+      }
+    } else if (detective.dY == 0 && detective.dX == -1) {
+      for (int i=0; i<items.size(); i++) {
+        result = collisionDetection(detective, detective.walkLeft.getWidth(), detective.walkLeft.getHeight(), items.get(i), items.get(i).getWidth(), items.get(i).getHeight());
+      }
+    } else if (detective.dY == 0 && detective.dX == 1) {
+      for (int i=0; i<items.size(); i++) {
+
+        result = collisionDetection(detective, detective.walkRight.getWidth(), detective.walkRight.getHeight(), items.get(i), items.get(i).getWidth(), items.get(i).getHeight());
+      }
+    }
+
+
+
     detective.display();
-    //detective.textbox();
   } else if (gameMode==2) {
     //minigame();
     image(background, x, 0); //draw background twice adjacent
@@ -122,6 +150,23 @@ void draw() {
   }
 }
 
+boolean collisionDetection(Sprite sprite, float w1, float h1, Item item, float w2, float h2) {
+  //sprite right edge< item left
+  //sprite.x+w1 < item.x
+  
+  //sprite left edge > item right
+  
+  //sprite.x > item.x+w2
+
+  //sprite bottom edge < item top
+  
+  //sprite.y+h1 < item.y
+
+  // sprite top > item bottom
+  //sprite.y > item.y+h2
+  
+  return (sprite.x+w1 < item.posX && sprite.x > item.posX+w2 && sprite.y+h1 < item.posY && sprite.y > item.posY+h2);
+}
 
 void minigame() {
   gameMode = 2;
@@ -134,43 +179,52 @@ void minigame() {
 }
 
 void keyPressed() {
-
+  if ( (key == 'x'|| key == 'X')&&detective.showTextbox) {
+    detective.showTextbox = false;
+  } else if ((key == 'x'|| key == 'X')) {
+  }
 
   if (gameMode == 2) {
-    if (key == CODED) { //moves goose on key press
-      if (keyCode == UP) { 
-        if (detective.y>5) { //prevents goose going off screen  
 
-          detective.y-=5;
-        }
-      } else if (keyCode == DOWN) {
-        if (detective.y<height-20) {
+    if (keyCode == UP|| key == 'w' || key == 'W') { 
+      if (detective.y>5) { //prevents goose going off screen  
 
-          detective.y += 5;
-        }
+        detective.y-=5;
+      }
+    } else if (keyCode == DOWN|| key == 's'|| key == 'S') {
+      if (detective.y<height-20) {
+
+        detective.y += 5;
       }
     }
   }
 
 
+
   if (gameMode == 1) {
-    if (key == CODED) {
-      if (keyCode == UP) { 
+
+
+
+    while (!result) {
+
+      if (keyCode == UP || key == 'w' || key == 'W') { 
+
+
         detective.dY = -1;
         detective.dX = 0;
         detective.y -= 5;
       }
-      if (keyCode == DOWN) {
+      if (keyCode == DOWN|| key == 's'|| key == 'S') {
         detective.dY = 1;
         detective.dX = 0;
         detective.y += 5;
       }
-      if (keyCode == LEFT) {
+      if (keyCode == LEFT|| key == 'a'|| key == 'A') {
         detective.dY = 0;
         detective.dX = -1;
         detective.x -= 5;
       }
-      if (keyCode == RIGHT) {
+      if (keyCode == RIGHT|| key == 'd'|| key == 'D') {
         detective.dY = 0;
         detective.dX = 1;
         detective.x += 5;

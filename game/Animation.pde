@@ -19,7 +19,12 @@ class Animation {
     image(images[frame], xpos, ypos);
   }
   
-  int getWidth() {
+  float getWidth() {
     return images[0].width;
   }
+
+  float getHeight() {
+    return images[0].height;
+  }
+
 }

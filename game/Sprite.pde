@@ -10,6 +10,7 @@
 
 
 class Sprite {
+  private boolean showTextbox = false;
   private Animation walkUp, walkDown, walkLeft, walkRight;
   private int x, y, dX, dY; //position + direction
   //private PImage[] walk;
@@ -44,12 +45,29 @@ class Sprite {
     else if (gameMode == 2){
         walkRight.display(x, y);
     }
+    
+    textbox();
   }
 
   public void textbox() {
-    fill(255, 125);
-    noStroke();
-    rect(0, height-height/3, width, height/3);
-    //depending on condition, display different text (read from file?)
+    if (showTextbox){
+      fill(255, 125);
+      noStroke();
+      rect(0, height-height/3, width, height/3);
+      fill(0);
+      textSize(30);
+      text("X", width-45, height-15);
+      //depending on condition, display different text (read from file?)
+      
+      //if (interact with object){
+        //text(item.description), 50, (height-height/3)+50)
+      //}
+    }
+  }
+  
+  
+  public boolean checkInteraction(){
+    color test = get(x+32,y);
+    return test==255;
   }
 }

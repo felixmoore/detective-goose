@@ -31,6 +31,14 @@ class Item{
   public void display(){
     image(itemImage,posX,posY);
   }
+  
+  public float getWidth() {
+    return itemImage.width;
+  }
+  
+  public float getHeight() {
+    return itemImage.height;
+  }
     
   public float getX(){
     return posX;
