@@ -13,9 +13,17 @@ class Enemy extends Sprite {
 
   public void attack() {
     //fire some kind of projectile @ goose
+
+    for (int i=0; i<2; i++) {
+      items.get(i).posX = x;
+      items.get(i).posY = y;
+      int speed = int(random(5, 10));
+      items.get(i).display();
+      items.get(i).posX-=speed;
+    }
   }
   public void display() {
-
+    //attack();
     walkRight.display(x, y);
   }
 
@@ -23,10 +31,19 @@ class Enemy extends Sprite {
     if (y>10 && y<height-200) {
       float yDist = random(-20, 20); //generates random value to move up/down by
       y+=int(yDist);
-    } else if (y>height-80) {
+    } else if (y>height-20) {
       y -= 20;
     } else if (y<10) {
       y += 20;
+    }
+
+
+    for (int i=0; i<2; i++) {
+      items.get(i).posX = x;
+      items.get(i).posY = y;
+      int speed = int(random(5, 10));
+      items.get(i).display();
+      items.get(i).posX-=speed;
     }
   }
 }

@@ -18,7 +18,7 @@ class Sprite {
   public Sprite() {
     dX = 0;
     dY = 1;
-    x=10;
+    x=width/2-35;
     y=height/2;
     walkUp = new Animation("/detective/up", 2); 
     walkDown = new Animation("/detective/down", 2);
@@ -50,6 +50,8 @@ class Sprite {
   }
 
   public void textbox() {
+    
+    
     if (showTextbox){
       fill(255, 125);
       noStroke();
@@ -58,10 +60,11 @@ class Sprite {
       textSize(30);
       text("X", width-45, height-15);
       //depending on condition, display different text (read from file?)
-      
+      //if (gameState ==1)
       //if (interact with object){
         //text(item.description), 50, (height-height/3)+50)
       //}
+      
     }
   }
   
@@ -70,4 +73,5 @@ class Sprite {
     color test = get(x+32,y);
     return test==255;
   }
+
 }
