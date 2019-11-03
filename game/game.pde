@@ -1,8 +1,8 @@
-PImage background, backWall, sideWall, bed, woodTexture; //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
+PImage background, backWall, sideWall, bed, woodTexture; //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
 int gameMode = 0; //0=menu, 1=main game, 2=mini game, 3=win, 4=lose
 Sprite detective;
 Enemy enemy;
-int x = 0, time, wait = 120000;
+int x = 0, time, wait = 120000, score = 0;
 boolean shut, result;
 
 
@@ -165,7 +165,12 @@ void draw() {
     text("There has been a kidnapping! Take a gander at the clues and help Detective Goose find the culprit.", (width/2)+2, (height-20));
   } else if (gameMode==1) {
     if (!(millis() - time >=wait)) {
-      
+      if (score == 5) {
+        minigame();
+        gameMode = 2;
+      }
+
+
       if (detective.dY == -1 && detective.dX == 0) {
         for (int i=0; i<items.size(); i++) {
           result = collisionDetection(detective, detective.walkUp.getWidth(), detective.walkUp.getHeight(), items.get(i), items.get(i).getWidth(), items.get(i).getHeight());
@@ -198,13 +203,13 @@ void draw() {
       }
       wallChecks();
       detective.display();
-      text(120-(millis()/1000),width-30,30); //timer
+      text(120-(millis()/1000), width-30, 30); //timer
       displayInventory();
       displayRandomItems();
     } else {
-  gameMode = 4;
-}
-} else if (gameMode==2) {
+      gameMode = 4;
+    }
+  } else if (gameMode==2) {
 
     image(background, x, 0); //draw background twice adjacent
     image(background, x+background.width, 0); 
@@ -241,18 +246,16 @@ void draw() {
     detective.display();
     enemy.move();
     enemy.display();
+    if (detective.x+70 >= enemy.x) {
+      gameMode = 3;
+    }
     if (detective.x<0) {
-      noLoop();
       gameMode = 4;
     }
-    if (detective.x+70 >= enemy.x) {
-      noLoop();
-      gameMode = 3;
-      //print win, after a few seconds move to win screen/gamemode 3
-    }
   } else if (gameMode==3) {
-    //win
-    //minigame();
+    //win //<>//
+
+
     color c1 = color(255, 39, 39);
     color c2 = color(255, 15, 212);
 
@@ -262,19 +265,12 @@ void draw() {
       stroke(c);
       line(i, 0, i, height);
     }
-    fill(0);
-    textSize(60);
+
     textAlign(CENTER);
-    text("Congratulations! You won!", (width/2)+2, (height/2-28));
-    fill(255);
-    text("Congratulations! You won!", width/2, height/2-30);
-
-
     fill(0);
-    textSize(40);
-    text("You saved the gosling from the evil" + enemy.enemyTypes[enemy.index]+"!", (width/2)+2, (height/2)+32);
+    text("Congratulations! You saved the gosling!", width/4, (height/2-28));
     fill(255);
-    text("You saved the gosling from the evil" + enemy.enemyTypes[enemy.index]+"!", width/2, height/2+30);
+    text("Congratulations! You saved the gosling!", width/4, height/2-30);
   } else if (gameMode==4) {
     //lose
 
