@@ -48,6 +48,14 @@ class Item{
   public void setY(float y){
     posY = y;
   }
+  
+  public float getImageWidth(){
+    return itemImage.width;
+  }
+  
+  public float getImageHeight(){
+    return itemImage.height;
+  }
 }
 
 //minigame: powerups need to come from right and move left until off screen or collected by player

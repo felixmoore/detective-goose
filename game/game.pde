@@ -23,7 +23,13 @@ Item sword, axe, bow, staff,
 ArrayList<Item> inventory = new ArrayList<Item>();
 //ARRAY LIST ALL ITEMS
 ArrayList<Item> items = new ArrayList<Item>();
+//ARRAY LIST RANDOM ITEMS
+ArrayList<Item> randomItemsList = new ArrayList<Item>();
 
+//NEEEEEW
+float[] randomItemPosX = {100,900,100,100,900};
+float[] randomItemPosY = {100,300,500,300,500};
+//NEEEEEW
 
 void setup() {
   size(1000, 600);
@@ -107,6 +113,7 @@ void setup() {
   }  
   gameMode = 1;
   detective = new Sprite();
+  setRandomItems();
 }
 
 
@@ -131,6 +138,7 @@ void draw() {
     detective.display();
     //NEW
     displayInventory();
+    displayRandomItems();
     //if item collision then call getItem()
     //NEW
     //detective.textbox();
@@ -172,6 +180,36 @@ void displayInventory(){
      tempItem.display();
    }
 }
+
+//NEEEEEEEEEW
+void setRandomItems(){
+  int randomIndex = int(random(0,20));
+  float xPos;
+  float yPos;
+  //int index = 0;
+  for(int i = 0; i<5; i++){
+    print(i);
+    randomIndex = int(random(0,20));
+    Item randomItem = items.get(randomIndex);
+    println(randomItemPosX);
+    xPos = randomItemPosX[i];
+    yPos = randomItemPosY[i];
+    randomItem.setX(xPos);
+    randomItem.setY(yPos);
+    randomItemsList.add(randomItem);
+    //randomItem.display();
+  }
+}
+
+void displayRandomItems(){
+  for(int i = 0; i<5; i++){
+    Item item = randomItemsList.get(i);
+    item.display();
+  }
+}
+  
+
+//NEEEEEEEEEW
 
 /*
 //if item has been collided with, then call getItem()
