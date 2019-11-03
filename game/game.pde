@@ -1,4 +1,4 @@
-PImage background, backWall, sideWall, bed, woodTexture; //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
+PImage background, backWall, sideWall, bed, woodTexture; //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
 int gameMode = 0; //0=menu, 1=main game, 2=mini game, 3=win, 4=lose
 Sprite detective;
 Enemy enemy;
@@ -433,16 +433,49 @@ boolean minigameCollide(color c) {
 }
 
 void displayInventory() {
+  //blank inventory
   fill(255);
   rect(40, 10, 250, 25);
   for (int i =0; i<inventory.size(); i++) {
     Item tempItem = inventory.get(i);
     tempItem.display();
   }
+  
+
 }
 
 
-
+void updateInventory(){
+  
+  for (int i = inventory.size()-1; i>-1; i--){
+    if (inventory.get(i).description == "empty"){
+     
+      inventory.set(i, items.get(i));
+      inventory.get(i).posX = 208;
+      inventory.get(i).posY = 12;
+      
+    
+      inventory.get(i).display();
+    }
+  }
+  
+  
+    //for (int i=0; i<items.size(); i++) {
+    //  if (items.get(i).getStatus()){
+    //    Item tempItem = items.get(i);
+    //    tempItem.posX = 42;
+    //     tempItem.posY = 12; 
+    //    if (i!=0){
+    //      tempItem.posX += 42; 
+    //    }
+    //    tempItem.display();
+        
+    //  }
+    //}
+  //loop all, check status, check description
+  //check if empty position in inventory
+    //if not, gamemode == 2, minigame();
+}
 
 
 

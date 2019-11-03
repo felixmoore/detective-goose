@@ -1,4 +1,4 @@
-//whether or not the item holds a clue //<>// //<>//
+//whether or not the item holds a clue //<>// //<>// //<>//
 //need inventory in main
 
 class Item {
@@ -18,6 +18,7 @@ class Item {
 
   public void setStatus(boolean isCollected) {
     inventoryStatus = isCollected;
+    
   }
 
   public boolean getStatus() {
@@ -65,6 +66,7 @@ class Item {
   public void pickup(float x, float y) {
     if (x >= posX -120 && x<=posX+20 && y>=posY-20 && y<=posY+20) {
       setStatus(true);
+      updateInventory();
       setX(-10);
       setY(-10);
     }
