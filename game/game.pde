@@ -2,7 +2,7 @@ PImage background, backWall, sideWall, bed, woodTexture; //<>// //<>// //<>// //
 int gameMode = 0; //0=menu, 1=main game, 2=mini game, 3=win, 4=lose
 Sprite detective;
 Enemy enemy;
-int x = 0;
+int x = 0, time, wait = 120000;
 boolean shut, result;
 
 
@@ -164,42 +164,47 @@ void draw() {
     textAlign(CENTER);
     text("There has been a kidnapping! Take a gander at the clues and help Detective Goose find the culprit.", (width/2)+2, (height-20));
   } else if (gameMode==1) {
+    if (!(millis() - time >=wait)) {
+      
+      if (detective.dY == -1 && detective.dX == 0) {
+        for (int i=0; i<items.size(); i++) {
+          result = collisionDetection(detective, detective.walkUp.getWidth(), detective.walkUp.getHeight(), items.get(i), items.get(i).getWidth(), items.get(i).getHeight());
+        }
+      } else if (detective.dY == 1 && detective.dX == 0 ||detective.dY == 0 && detective.dX == 0 ) {
+        for (int i=0; i<items.size(); i++) {
+          result = collisionDetection(detective, detective.walkDown.getWidth(), detective.walkDown.getHeight(), items.get(i), items.get(i).getWidth(), items.get(i).getHeight());
+        }
+      } else if (detective.dY == 0 && detective.dX == -1) {
+        for (int i=0; i<items.size(); i++) {
+          result = collisionDetection(detective, detective.walkLeft.getWidth(), detective.walkLeft.getHeight(), items.get(i), items.get(i).getWidth(), items.get(i).getHeight());
+        }
+      } else if (detective.dY == 0 && detective.dX == 1) {
+        for (int i=0; i<items.size(); i++) {
 
-    if (detective.dY == -1 && detective.dX == 0) {
-      for (int i=0; i<items.size(); i++) {
-        result = collisionDetection(detective, detective.walkUp.getWidth(), detective.walkUp.getHeight(), items.get(i), items.get(i).getWidth(), items.get(i).getHeight());
+          result = collisionDetection(detective, detective.walkRight.getWidth(), detective.walkRight.getHeight(), items.get(i), items.get(i).getWidth(), items.get(i).getHeight());
+        }
       }
-    } else if (detective.dY == 1 && detective.dX == 0 ||detective.dY == 0 && detective.dX == 0 ) {
+
+      //image(background,0,0);
+      back.display(); //show rooms
+
+      room[0].display();//display rooms
+      room[1].display();//display rooms
+
+      roomL[0].display();//display rooms
+      roomL[1].display();
       for (int i=0; i<items.size(); i++) {
-        result = collisionDetection(detective, detective.walkDown.getWidth(), detective.walkDown.getHeight(), items.get(i), items.get(i).getWidth(), items.get(i).getHeight());
+        items.get(i).display();
       }
-    } else if (detective.dY == 0 && detective.dX == -1) {
-      for (int i=0; i<items.size(); i++) {
-        result = collisionDetection(detective, detective.walkLeft.getWidth(), detective.walkLeft.getHeight(), items.get(i), items.get(i).getWidth(), items.get(i).getHeight());
-      }
-    } else if (detective.dY == 0 && detective.dX == 1) {
-      for (int i=0; i<items.size(); i++) {
-
-        result = collisionDetection(detective, detective.walkRight.getWidth(), detective.walkRight.getHeight(), items.get(i), items.get(i).getWidth(), items.get(i).getHeight());
-      }
-    }
-
-    //image(background,0,0);
-    back.display(); //show rooms
-
-    room[0].display();//display rooms
-    room[1].display();//display rooms
-
-    roomL[0].display();//display rooms
-    roomL[1].display();
-    for (int i=0; i<items.size(); i++) {
-      items.get(i).display();
-    }
-    wallChecks();
-    detective.display();
-    displayInventory();
-    displayRandomItems();
-  } else if (gameMode==2) {
+      wallChecks();
+      detective.display();
+      text(120-(millis()/1000),width-30,30); //timer
+      displayInventory();
+      displayRandomItems();
+    } else {
+  gameMode = 4;
+}
+} else if (gameMode==2) {
 
     image(background, x, 0); //draw background twice adjacent
     image(background, x+background.width, 0); 
@@ -449,6 +454,7 @@ void keyPressed() {
   if (gameMode == 0) {
     if (key ==' ') {
       gameMode = 1;
+      time = millis();
     }
   }
 
