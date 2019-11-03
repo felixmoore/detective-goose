@@ -130,89 +130,94 @@ void draw() {
   if (gameMode==0) {
     //menu
     background(139);
-    fill(0);
-    textSize(60);
-    textAlign(CENTER);
-    text("GOOSE DETECTIVE", (width/2)+2, (height/2-28));
-    fill(255);
-    text("GOOSE DETECTIVE", width/2, height/2-30);
+    color c1 = color(88, 111, 255);
+    color c2 = color(116, 255, 154);
 
-    fill(0);
-    textSize(40);
-    text("PRESS SPACE TO START", (width/2)+2, (height/2)+32);
-    fill(255);
-    text("PRESS SPACE TO START", width/2, height/2+30);
-
-    fill(0);
-    textSize(20);
-    textAlign(CENTER);
-    text("There has been a kidnapping! Take a gander at the clues and help Detective Goose find the culprit.", (width/2)+2, (height-20));
-  } else if (gameMode==1) {
-
-    if (detective.dY == -1 && detective.dX == 0) {
-      for (int i=0; i<items.size(); i++) {
-        result = collisionDetection(detective, detective.walkUp.getWidth(), detective.walkUp.getHeight(), items.get(i), items.get(i).getWidth(), items.get(i).getHeight());
-      }
-    } else if (detective.dY == 1 && detective.dX == 0 ||detective.dY == 0 && detective.dX == 0 ) {
-      for (int i=0; i<items.size(); i++) {
-        result = collisionDetection(detective, detective.walkDown.getWidth(), detective.walkDown.getHeight(), items.get(i), items.get(i).getWidth(), items.get(i).getHeight());
-      }
-    } else if (detective.dY == 0 && detective.dX == -1) {
-      for (int i=0; i<items.size(); i++) {
-        result = collisionDetection(detective, detective.walkLeft.getWidth(), detective.walkLeft.getHeight(), items.get(i), items.get(i).getWidth(), items.get(i).getHeight());
-      }
-    } else if (detective.dY == 0 && detective.dX == 1) {
-      for (int i=0; i<items.size(); i++) {
-
-        result = collisionDetection(detective, detective.walkRight.getWidth(), detective.walkRight.getHeight(), items.get(i), items.get(i).getWidth(), items.get(i).getHeight());
-      }
+    for (int i = 0; i <= width; i++) {
+      float inter = map(i, 0, width, 0, 1);
+      color c = lerpColor(c1, c2, inter);
+      stroke(c);
+      line(i, 0, i, height);
+      
     }
+      fill(0);
+      textSize(60);
+      textAlign(CENTER);
+      text("GOOSE DETECTIVE", (width/2)+2, (height/2-28));
+      fill(255);
+      text("GOOSE DETECTIVE", width/2, height/2-30);
 
-    //image(background,0,0);
-    back.display(); //show rooms
+      fill(0);
+      textSize(40);
+      text("PRESS SPACE TO START", (width/2)+2, (height/2)+32);
+      fill(255);
+      text("PRESS SPACE TO START", width/2, height/2+30);
 
-    room[0].display();//display rooms
-    room[1].display();//display rooms
+      fill(0);
+      textSize(20);
+      textAlign(CENTER);
+      text("There has been a kidnapping! Take a gander at the clues and help Detective Goose find the culprit.", (width/2)+2, (height-20));
+    } else if (gameMode==1) {
 
-    roomL[0].display();//display rooms
-    roomL[1].display();
+  if (detective.dY == -1 && detective.dX == 0) {
     for (int i=0; i<items.size(); i++) {
-      items.get(i).display();
+      result = collisionDetection(detective, detective.walkUp.getWidth(), detective.walkUp.getHeight(), items.get(i), items.get(i).getWidth(), items.get(i).getHeight());
     }
-
-
-
-
-
-
-    detective.display();
-
-    displayInventory();
-  } else if (gameMode==2) {
-
-    image(background, x, 0); //draw background twice adjacent
-    image(background, x+background.width, 0); 
-    x -=10;
-    if (x == -background.width) {
-      x=0; //wrap background
+  } else if (detective.dY == 1 && detective.dX == 0 ||detective.dY == 0 && detective.dX == 0 ) {
+    for (int i=0; i<items.size(); i++) {
+      result = collisionDetection(detective, detective.walkDown.getWidth(), detective.walkDown.getHeight(), items.get(i), items.get(i).getWidth(), items.get(i).getHeight());
     }
-    for (int i=0; i<2; i++) {
-      items.get(i).display();
-      items.get(i).posX -= 5;
+  } else if (detective.dY == 0 && detective.dX == -1) {
+    for (int i=0; i<items.size(); i++) {
+      result = collisionDetection(detective, detective.walkLeft.getWidth(), detective.walkLeft.getHeight(), items.get(i), items.get(i).getWidth(), items.get(i).getHeight());
     }
-    items.get(12).display();
-    items.get(12).posX -= 3;
+  } else if (detective.dY == 0 && detective.dX == 1) {
+    for (int i=0; i<items.size(); i++) {
 
-    detective.display();
-    enemy.move();
-    enemy.display();
-  } else if (gameMode==3) {
-    //win
-    minigame();
-  } else if (gameMode==4) {
-    //lose
+      result = collisionDetection(detective, detective.walkRight.getWidth(), detective.walkRight.getHeight(), items.get(i), items.get(i).getWidth(), items.get(i).getHeight());
+    }
   }
-  wallChecks();
+
+  //image(background,0,0);
+  back.display(); //show rooms
+
+  room[0].display();//display rooms
+  room[1].display();//display rooms
+
+  roomL[0].display();//display rooms
+  roomL[1].display();
+  for (int i=0; i<items.size(); i++) {
+    items.get(i).display();
+  }
+
+  detective.display();
+
+  displayInventory();
+} else if (gameMode==2) {
+
+  image(background, x, 0); //draw background twice adjacent
+  image(background, x+background.width, 0); 
+  x -=10;
+  if (x == -background.width) {
+    x=0; //wrap background
+  }
+  for (int i=0; i<2; i++) {
+    items.get(i).display();
+    items.get(i).posX -= 5;
+  }
+  items.get(12).display();
+  items.get(12).posX -= 3;
+
+  detective.display();
+  enemy.move();
+  enemy.display();
+} else if (gameMode==3) {
+  //win
+  minigame();
+} else if (gameMode==4) {
+  //lose
+}
+wallChecks();
 }
 
 
