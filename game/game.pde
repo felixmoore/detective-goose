@@ -198,7 +198,6 @@ void draw() {
     }
     wallChecks();
     detective.display();
-
     displayInventory();
     displayRandomItems();
   } else if (gameMode==2) {
@@ -215,6 +214,10 @@ void draw() {
     for (int i=0; i<2; i++) {
       items.get(i).display();
       items.get(i).posX -= 5;
+      if (items.get(i).posX < 0) {
+        items.get(i).posX = width;
+        items.get(i).posY = int(random(100, height-100));
+      }
     }
     items.get(12).display();
     items.get(12).posX -= 3;
@@ -223,14 +226,28 @@ void draw() {
       items.get(12).posX = width;
       items.get(12).posY = int(random(100, height-100));
     }
-
-    if (minigameCollide()) {
+    if (minigameCollide(color(106, 190, 48))) {
       detective.x += 200;
+    }
+
+    if (minigameCollide(color(155, 173, 183)) || minigameCollide(color(143, 86, 59))) {
+      detective.x -= 50;
     }
 
     detective.display();
     enemy.move();
     enemy.display();
+
+    if (detective.x >= enemy.x-20) {
+      noLoop();
+      detective.display();
+
+      enemy.display();
+      //print win, after a few seconds move to win screen/gamemode 3
+    }
+
+
+    
   } else if (gameMode==3) {
     //win
     minigame();
@@ -351,8 +368,8 @@ void minigame() {
 
   for (int i=0; i<2; i++) {
     items.get(i).itemImage.resize(32, 0);
-    items.get(i).posX = enemy.x;
-    items.get(i).posY = enemy.y;
+    items.get(i).posX = width;
+    items.get(i).posY = random(0, height);
   }
   items.get(12).itemImage.resize(32, 0);
   items.get(12).posX = enemy.x;
@@ -363,9 +380,9 @@ void minigame() {
   }
 }
 
-boolean minigameCollide() {
+boolean minigameCollide(color c) {
   color test; 
-  color c = color(106, 190, 48); //apple colour
+
   for (int i=detective.y; i<detective.y+74; i++) {
     test = get(detective.x+70, i);
     if (test == c) {

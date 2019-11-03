@@ -1,4 +1,4 @@
-//whether or not the item holds a clue //<>//
+//whether or not the item holds a clue //<>// //<>//
 //need inventory in main
 
 class Item {
@@ -34,6 +34,7 @@ class Item {
     if (gameMode == 2) {
       int speed=int(random(1, 5));
       posX-=speed;
+      
     }
   }
 
