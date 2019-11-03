@@ -83,6 +83,8 @@ void setup() {
   chest = new Item(loadImage("item_chestClosed.png"), "chest", 1, 1, false);
   // items for mini game
   bomb = new Item(loadImage("item_bomb.png"), "bomb", 1, 1, false);
+  //empty
+  empty = new Item(loadImage("item_empty.png"), "empty", 1, 1, false);
   
   items.add(sword);items.add(axe);items.add(bow);items.add(staff);
   items.add(ring);items.add(helmet);items.add(hat);items.add(shoes);
@@ -91,6 +93,7 @@ void setup() {
   items.add(candle);items.add(chalice);items.add(potion);items.add(necklace);
   items.add(bookshelf);items.add(barrel);items.add(tableShort);items.add(tableLong);items.add(chest);
   items.add(bomb);
+  items.add(empty);
   println(items);
   //println((items.get(0)).getDescription());
     
@@ -170,7 +173,7 @@ void displayInventory(){
    }
 }
 
-
+/*
 //if item has been collided with, then call getItem()
 void getItem(){
   String itemRange = isItemInRange(); //returns item or null
@@ -205,8 +208,11 @@ boolean, int isInventoryFull(){
   }
   return isFull, index;
 }
-//NEW
 
+
+
+//NEW
+*/
 
 
 void keyPressed() {
