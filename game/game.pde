@@ -1,4 +1,4 @@
-PImage background, backWall, sideWall, bed, woodTexture; //<>// //<>// //<>// //<>// //<>// //<>// //<>//
+PImage background, backWall, sideWall, bed, woodTexture; //<>// //<>// //<>// //<>// //<>// //<>// //<>// //<>//
 int gameMode = 0; //0=menu, 1=main game, 2=mini game, 3=win, 4=lose
 Sprite detective;
 Enemy enemy;
@@ -27,8 +27,8 @@ ArrayList<Item> items = new ArrayList<Item>();
 ArrayList<Item> randomItemsList = new ArrayList<Item>();
 
 //NEEEEEW
-float[] randomItemPosX = {100,900,100,100,900};
-float[] randomItemPosY = {100,300,500,300,500};
+float[] randomItemPosX = {100, 900, 100, 100, 900};
+float[] randomItemPosY = {100, 300, 500, 300, 500};
 //NEEEEEW
 
 void setup() {
@@ -128,7 +128,7 @@ void setup() {
     inventory.add(new Item(loadImage("item_empty.png"), "empty", 50 *(i+1), 15, false));
   }  
 
-  gameMode = 0;
+  gameMode = 3;
   detective = new Sprite();
   setRandomItems();
 }
@@ -146,99 +146,109 @@ void draw() {
       color c = lerpColor(c1, c2, inter);
       stroke(c);
       line(i, 0, i, height);
-      
     }
-      fill(0);
-      textSize(60);
-      textAlign(CENTER);
-      text("GOOSE DETECTIVE", (width/2)+2, (height/2-28));
-      fill(255);
-      text("GOOSE DETECTIVE", width/2, height/2-30);
+    fill(0);
+    textSize(60);
+    textAlign(CENTER);
+    text("GOOSE DETECTIVE", (width/2)+2, (height/2-28));
+    fill(255);
+    text("GOOSE DETECTIVE", width/2, height/2-30);
 
-      fill(0);
-      textSize(40);
-      text("PRESS SPACE TO START", (width/2)+2, (height/2)+32);
-      fill(255);
-      text("PRESS SPACE TO START", width/2, height/2+30);
+    fill(0);
+    textSize(40);
+    text("PRESS SPACE TO START", (width/2)+2, (height/2)+32);
+    fill(255);
+    text("PRESS SPACE TO START", width/2, height/2+30);
 
-      fill(0);
-      textSize(20);
-      textAlign(CENTER);
-      text("There has been a kidnapping! Take a gander at the clues and help Detective Goose find the culprit.", (width/2)+2, (height-20));
-    } else if (gameMode==1) {
+    fill(0);
+    textSize(20);
+    textAlign(CENTER);
+    text("There has been a kidnapping! Take a gander at the clues and help Detective Goose find the culprit.", (width/2)+2, (height-20));
+  } else if (gameMode==1) {
 
-  if (detective.dY == -1 && detective.dX == 0) {
+    if (detective.dY == -1 && detective.dX == 0) {
+      for (int i=0; i<items.size(); i++) {
+        result = collisionDetection(detective, detective.walkUp.getWidth(), detective.walkUp.getHeight(), items.get(i), items.get(i).getWidth(), items.get(i).getHeight());
+      }
+    } else if (detective.dY == 1 && detective.dX == 0 ||detective.dY == 0 && detective.dX == 0 ) {
+      for (int i=0; i<items.size(); i++) {
+        result = collisionDetection(detective, detective.walkDown.getWidth(), detective.walkDown.getHeight(), items.get(i), items.get(i).getWidth(), items.get(i).getHeight());
+      }
+    } else if (detective.dY == 0 && detective.dX == -1) {
+      for (int i=0; i<items.size(); i++) {
+        result = collisionDetection(detective, detective.walkLeft.getWidth(), detective.walkLeft.getHeight(), items.get(i), items.get(i).getWidth(), items.get(i).getHeight());
+      }
+    } else if (detective.dY == 0 && detective.dX == 1) {
+      for (int i=0; i<items.size(); i++) {
+
+        result = collisionDetection(detective, detective.walkRight.getWidth(), detective.walkRight.getHeight(), items.get(i), items.get(i).getWidth(), items.get(i).getHeight());
+      }
+    }
+
+    //image(background,0,0);
+    back.display(); //show rooms
+
+    room[0].display();//display rooms
+    room[1].display();//display rooms
+
+    roomL[0].display();//display rooms
+    roomL[1].display();
     for (int i=0; i<items.size(); i++) {
-      result = collisionDetection(detective, detective.walkUp.getWidth(), detective.walkUp.getHeight(), items.get(i), items.get(i).getWidth(), items.get(i).getHeight());
+      items.get(i).display();
     }
-  } else if (detective.dY == 1 && detective.dX == 0 ||detective.dY == 0 && detective.dX == 0 ) {
-    for (int i=0; i<items.size(); i++) {
-      result = collisionDetection(detective, detective.walkDown.getWidth(), detective.walkDown.getHeight(), items.get(i), items.get(i).getWidth(), items.get(i).getHeight());
+    wallChecks();
+    detective.display();
+
+    displayInventory();
+    displayRandomItems();
+  } else if (gameMode==2) {
+
+    image(background, x, 0); //draw background twice adjacent
+    image(background, x+background.width, 0); 
+    x -=10;
+    if (x == -background.width) {
+      x=0; //wrap background
     }
-  } else if (detective.dY == 0 && detective.dX == -1) {
-    for (int i=0; i<items.size(); i++) {
-      result = collisionDetection(detective, detective.walkLeft.getWidth(), detective.walkLeft.getHeight(), items.get(i), items.get(i).getWidth(), items.get(i).getHeight());
+
+
+
+    for (int i=0; i<2; i++) {
+      items.get(i).display();
+      items.get(i).posX -= 5;
     }
-  } else if (detective.dY == 0 && detective.dX == 1) {
-    for (int i=0; i<items.size(); i++) {
+    items.get(12).display();
+    items.get(12).posX -= 3;
 
-      result = collisionDetection(detective, detective.walkRight.getWidth(), detective.walkRight.getHeight(), items.get(i), items.get(i).getWidth(), items.get(i).getHeight());
+    if (items.get(12).posX < 0) {
+      items.get(12).posX = width;
+      items.get(12).posY = int(random(100, height-100));
     }
+
+    if (minigameCollide()) {
+      detective.x += 200;
+    }
+
+    detective.display();
+    enemy.move();
+    enemy.display();
+  } else if (gameMode==3) {
+    //win
+    minigame();
+  } else if (gameMode==4) {
+    //lose
   }
-
-  //image(background,0,0);
-  back.display(); //show rooms
-
-  room[0].display();//display rooms
-  room[1].display();//display rooms
-
-  roomL[0].display();//display rooms
-  roomL[1].display();
-  for (int i=0; i<items.size(); i++) {
-    items.get(i).display();
-  }
-
-  detective.display();
-
-  displayInventory();
-  displayRandomItems();
-} else if (gameMode==2) {
-
-  image(background, x, 0); //draw background twice adjacent
-  image(background, x+background.width, 0); 
-  x -=10;
-  if (x == -background.width) {
-    x=0; //wrap background
-  }
-  for (int i=0; i<2; i++) {
-    items.get(i).display();
-    items.get(i).posX -= 5;
-  }
-  items.get(12).display();
-  items.get(12).posX -= 3;
-
-  detective.display();
-  enemy.move();
-  enemy.display();
-} else if (gameMode==3) {
-  //win
-  minigame();
-} else if (gameMode==4) {
-  //lose
-}
-wallChecks();
 }
 
 
 //NEEEEEEEEEW
-void setRandomItems(){
-  int randomIndex = int(random(0,20));
+void setRandomItems() {
+  int randomIndex = int(random(0, 20));
   float xPos;
   float yPos;
   //int index = 0;
-  for(int i = 0; i<5; i++){
+  for (int i = 0; i<5; i++) {
     print(i);
-    randomIndex = int(random(0,20));
+    randomIndex = int(random(0, 20));
     Item randomItem = items.get(randomIndex);
     println(randomItemPosX);
     xPos = randomItemPosX[i];
@@ -250,13 +260,13 @@ void setRandomItems(){
   }
 }
 
-void displayRandomItems(){
-  for(int i = 0; i<5; i++){
+void displayRandomItems() {
+  for (int i = 0; i<5; i++) {
     Item item = randomItemsList.get(i);
     item.display();
   }
 }
-  
+
 
 
 
@@ -353,6 +363,18 @@ void minigame() {
   }
 }
 
+boolean minigameCollide() {
+  color test; 
+  color c = color(106, 190, 48); //apple colour
+  for (int i=detective.y; i<detective.y+74; i++) {
+    test = get(detective.x+70, i);
+    if (test == c) {
+      return true;
+    }
+  }
+  return false;
+}
+
 void displayInventory() {
   fill(255);
   rect(40, 10, 250, 25);
@@ -381,12 +403,12 @@ void keyPressed() {
   if (gameMode == 2) {
 
     if (keyCode == UP|| key == 'w' || key == 'W') { 
-      if (detective.y>5) { //prevents goose going off screen  
+      if (detective.y>0) { //prevents goose going off screen  
 
         detective.y-=5;
       }
     } else if (keyCode == DOWN|| key == 's'|| key == 'S') {
-      if (detective.y<height-20) {
+      if (detective.y<height-74) {
 
         detective.y += 5;
       }
