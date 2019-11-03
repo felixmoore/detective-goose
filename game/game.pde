@@ -83,7 +83,7 @@ background = loadImage("grass.png");
   //bomb = new Item(loadImage("item_bomb.png"), "bomb", 1, 1, false);
 
 
-  gameMode = 1;
+  gameMode = 0;
   detective = new Sprite();
 }
 
