@@ -37,4 +37,25 @@ class Background {
       }
     }
   }
+  
+  
+  public void backWallCheck(){
+   float xVal;
+   float yVal; 
+    xVal=detective.x;
+  yVal=detective.y;
+  if ((xVal<=30)){
+  detective.x=45;
+    }
+    else if(xVal>=width-100){
+    detective.x=width-95;
+    }else if (yVal>=height-80){
+      detective.y=height-95;
+    }
+    else if (yVal<=35){
+      detective.y=50;
+}
+}
+  
+  
 }

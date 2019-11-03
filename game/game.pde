@@ -21,14 +21,14 @@ RoomL[] roomL;
 //  bomb;
 
 void setup() {
-background = loadImage("grass.png");
+  background = loadImage("grass.png");
 
   size(1000, 600);
   frameRate(30); //controls animation speed
 
   //background
   back=new Background(width, height);//set background
-  shut=true;//shut doors
+  //shut=true;//shut doors
 
   //load image
   bed=loadImage("Blue_Bed_Side.png");
@@ -42,8 +42,12 @@ background = loadImage("grass.png");
   roomL= new RoomL[2];
 
   for (int i=0; i<room.length; i++) {
-    room[i]=new Room(width, height, 200*(i+1), (width/2.001), 200*(i+1)) ;
+    room[i]=new Room(width, height, 200*(i+1), (width/2.001), 40+200*(i+1)) ;
   }
+  for (int i=0; i<roomL.length; i++) {
+    roomL[i]=new RoomL(width, height, 200*(i+1), width-(width/2.001), 40+200*(i+1)) ;
+  }
+
 
 
   //weapon
@@ -98,20 +102,17 @@ void draw() {
     text("GOOSE DETECTIVE", (width/2)+2, (height/2-28));
     fill(255);
     text("GOOSE DETECTIVE", width/2, height/2-30);
-    
+
     fill(0);
     textSize(40);
     text("PRESS SPACE TO START", (width/2)+2, (height/2)+32);
     fill(255);
     text("PRESS SPACE TO START", width/2, height/2+30);
-    
+
     fill(0);
     textSize(20);
     textAlign(CENTER);
     text("There has been a kidnapping! Take a gander at the clues and help Detective Goose find the culprit.", (width/2)+2, (height-20));
-    
-
-    
   } else if (gameMode==1) {
 
     if (detective.dY == -1 && detective.dX == 0) {
@@ -135,15 +136,10 @@ void draw() {
 
     //image(background,0,0);
     back.display(); //show rooms
-    for (int i=0; i<room.length; i++) {
-      room[i]=new Room(width, height, 200*(i+1), (width/2.001), 40+200*(i+1)) ;
-    }
+
     room[0].display();//display rooms
     room[1].display();//display rooms
 
-    for (int i=0; i<roomL.length; i++) {
-      roomL[i]=new RoomL(width, height, 200*(i+1), width-(width/2.001), 40+200*(i+1)) ;
-    }
     roomL[0].display();//display rooms
     roomL[1].display();
     for (int i=0; i<items.size(); i++) {
@@ -158,7 +154,7 @@ void draw() {
     detective.display();
   } else if (gameMode==2) {
     //minigame();
-    
+
     image(background, x, 0); //draw background twice adjacent
     image(background, x+background.width, 0); 
     x -=10;
@@ -173,6 +169,17 @@ void draw() {
     minigame();
   } else if (gameMode==4) {
     //lose
+  }
+  wallChecks();
+}
+
+void wallChecks() {
+  back.backWallCheck();
+  for (int i=0; i<room.length; i++) {
+    room[i].wallDetect();
+  }
+  for (int i=0; i<roomL.length; i++) {
+    roomL[i].wallDetect();
   }
 }
 
@@ -195,10 +202,10 @@ void keyPressed() {
     detective.showTextbox = false;
   } 
 
-  if (gameMode == 0){
-   if (key ==' ') {
-     gameMode = 1;
-   }
+  if (gameMode == 0) {
+    if (key ==' ') {
+      gameMode = 1;
+    }
   }
 
   if (gameMode == 2) {
@@ -246,7 +253,14 @@ void keyPressed() {
         detective.dX = 1;
         detective.x += 5;
       } else if  (key == 'x'|| key == 'X') {
-        detective.showTextbox = true;
+        for (int i=0; i<room.length; i++) {
+          room[i].doorOpen();
+        }
+
+        for (int i=0; i<roomL.length; i++) {
+          roomL[i].doorOpen(); 
+          //detective.showTextbox = true;
+        }
       }
     }
   }
