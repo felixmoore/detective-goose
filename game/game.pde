@@ -16,13 +16,18 @@ Item sword, axe, bow, staff,
   apple, cheese, egg, pie, 
   candle, chalice, potion, necklace, 
   bookshelf, barrel, tableShort, tableLong, chest, 
-  bomb;
+  bomb,
+  empty;
+
+//ARRAY LIST INVENTORY
+ArrayList<Item> inventory = new ArrayList<Item>();
+//ARRAY LIST INVENTORY
 
 void setup() {
   size(1000, 600);
   //background = loadImage("temp_background.png");
   frameRate(30); //controls animation speed
-
+  
   //background
   back=new Background(width, height);//set background
   size(1000, 600);
@@ -42,8 +47,7 @@ void setup() {
   for (int i=0; i<room.length; i++) {
     room[i]=new Room(width, height, 200*(i+1), (width/2.001), 200*(i+1)) ;
   }
-
-
+  
   //weapon
   sword = new Item(loadImage("item_sword.png"), "sword", 1, 1, false);
   axe = new Item(loadImage("item_axe.png"), "axe", 1, 1, false);
@@ -77,8 +81,32 @@ void setup() {
   chest = new Item(loadImage("item_chestClosed.png"), "chest", 1, 1, false);
   // items for mini game
   bomb = new Item(loadImage("item_bomb.png"), "bomb", 1, 1, false);
-
-
+  
+  
+  //EMPTY ITEM
+  //empty = new Item(loadImage("item_empty.png"), "empty", 1, 1, false);
+  //EMPTY ITEM
+  //ARRAY INVENTORY LIST
+  int inventorySize = 5;
+  for (int i =0; i<inventorySize; i++){
+    inventory.add(new Item(loadImage("item_empty.png"), "empty", 50 *(i+1), 15, false));
+  }
+  /*
+  //ArrayList<Item> inventory = new ArrayList<Item>();
+   //int num = inventory.size();
+   //println(num);
+   //println(inventory);
+   for (int i =0; i<inventory.size(); i++){
+     Item tempItem = inventory.get(i);
+     println(tempItem);
+     tempItem.display();
+     String description = tempItem.getDescription();
+     println(description);
+     println();
+   }
+  //ARRAY INVENTORY LIST
+  */
+  
   gameMode = 1;
   detective = new Sprite();
 }
@@ -103,6 +131,10 @@ void draw() {
     roomL[0].display();//display rooms
     roomL[1].display();
     detective.display();
+    //NEW
+    displayInventory();
+    //if item collision then call getItem()
+    //NEW
     //detective.textbox();
   } else if (gameMode==2) {
     //minigame();
@@ -133,9 +165,59 @@ void minigame() {
   detective.walkRight.display(detective.x, detective.y);
 }
 
+//NEW
+void displayInventory(){
+  fill(255);
+  rect(40,10, 250, 25);
+  for (int i =0; i<inventory.size(); i++){
+     Item tempItem = inventory.get(i);
+     //println(tempItem);
+     tempItem.display();
+     //String description = tempItem.getDescription();
+     //println(description);
+     //println();
+   }
+}
+
+
+//if item has been collided with, then call getItem()
+void getItem(){
+  String itemRange = isItemInRange(); //returns item or null
+  //check if space in inventory: spaceInInventory = isInventoryFull()
+  boolean spaceInInventory, int emptyIndex = isInventoryFull();
+  //println(itemRange, spaceInInventory);
+  if (itemRange != "null" && spaceInInventory == true){
+    //put item in inventory
+    inventory[emptyIndex] = collidedItem;
+    //collidedItem.setStatus = true;
+  }
+}
+
+String isItemInRange(){
+  //use goose coordinates to identify item
+  //
+  return 
+}
+
+boolean, int isInventoryFull(){
+  boolean isFull = true;
+  int index = -1; //-1 means no more index avaiable
+  for (int i =0; i<inventory.size(); i++){
+     Item tempItem = inventory.get(i);
+     //println(tempItem);
+     String itemDescription = tempItem.getDescription();
+     if(itemDescription != "empty"){
+       isFull = false;
+       index = i;
+       noLoop();
+     }
+  }
+  return isFull, index;
+}
+//NEW
+
+
 void keyPressed() {
-
-
   if (gameMode == 2) {
     if (key == CODED) { //moves goose on key press
       if (keyCode == UP) { 
@@ -175,6 +257,10 @@ void keyPressed() {
         detective.dX = 1;
         detective.x += 5;
       }
+      //if e.g. X is clicked
+      //   check x,y coordinates of goose
+      //   loop through array list of potential item locations
+      //   if goosePos is with 
     }
   }
 }
