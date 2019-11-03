@@ -1,6 +1,7 @@
 //whether or not the item holds a clue
 //need inventory in main
 
+//make class a sprite so that can detect a collision with goose sprite
 class Item{
   private String description;
   private float posX;
@@ -20,7 +21,7 @@ class Item{
     inventoryStatus = isCollected;
   }
   
-  public boolean getStatus(){
+  public boolean getStatus(){ 
     return inventoryStatus;
   }
   

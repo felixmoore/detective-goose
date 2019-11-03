@@ -21,7 +21,9 @@ Item sword, axe, bow, staff,
 
 //ARRAY LIST INVENTORY
 ArrayList<Item> inventory = new ArrayList<Item>();
-//ARRAY LIST INVENTORY
+//ARRAY LIST ALL ITEMS
+ArrayList<Item> items = new ArrayList<Item>();
+
 
 void setup() {
   size(1000, 600);
@@ -82,7 +84,16 @@ void setup() {
   // items for mini game
   bomb = new Item(loadImage("item_bomb.png"), "bomb", 1, 1, false);
   
-  
+  items.add(sword);items.add(axe);items.add(bow);items.add(staff);
+  items.add(ring);items.add(helmet);items.add(hat);items.add(shoes);
+  items.add(goldKey);items.add(silverKey);items.add(blueScroll);items.add(redScroll);
+  items.add(apple);items.add(cheese);items.add(egg);items.add(pie);
+  items.add(candle);items.add(chalice);items.add(potion);items.add(necklace);
+  items.add(bookshelf);items.add(barrel);items.add(tableShort);items.add(tableLong);items.add(chest);
+  items.add(bomb);
+  println(items);
+  //println((items.get(0)).getDescription());
+    
   //EMPTY ITEM
   //empty = new Item(loadImage("item_empty.png"), "empty", 1, 1, false);
   //EMPTY ITEM
@@ -90,23 +101,7 @@ void setup() {
   int inventorySize = 5;
   for (int i =0; i<inventorySize; i++){
     inventory.add(new Item(loadImage("item_empty.png"), "empty", 50 *(i+1), 15, false));
-  }
-  /*
-  //ArrayList<Item> inventory = new ArrayList<Item>();
-   //int num = inventory.size();
-   //println(num);
-   //println(inventory);
-   for (int i =0; i<inventory.size(); i++){
-     Item tempItem = inventory.get(i);
-     println(tempItem);
-     tempItem.display();
-     String description = tempItem.getDescription();
-     println(description);
-     println();
-   }
-  //ARRAY INVENTORY LIST
-  */
-  
+  }  
   gameMode = 1;
   detective = new Sprite();
 }
@@ -171,11 +166,7 @@ void displayInventory(){
   rect(40,10, 250, 25);
   for (int i =0; i<inventory.size(); i++){
      Item tempItem = inventory.get(i);
-     //println(tempItem);
      tempItem.display();
-     //String description = tempItem.getDescription();
-     //println(description);
-     //println();
    }
 }
 
@@ -194,7 +185,7 @@ void getItem(){
 }
 
 String isItemInRange(){
-  //use goose coordinates to identify item
+  //
   //
   return 
 }
@@ -215,6 +206,7 @@ boolean, int isInventoryFull(){
   return isFull, index;
 }
 //NEW
+
 
 
 void keyPressed() {
